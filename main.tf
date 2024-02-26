@@ -99,60 +99,60 @@ module "directus" {
       image  = "directus/directus:10.9.2"
       secrets = [
         {
-          name  = "KEY"
-          valueFrom = var.container_secret:KEY::
+          name      = "KEY"
+          valueFrom = "${var.container_secret}:KEY::"
         },
         {
-          name  = "SECRET"
-          valueFrom = var.container_secret:SECRET::
+          name      = "SECRET"
+          valueFrom = "${var.container_secret}:SECRET::"
         },
         {
-          name  = "ADMIN_EMAIL"
-          valueFrom = var.container_secret:ADMIN_EMAIL::
+          name      = "ADMIN_EMAIL"
+          valueFrom = "${var.container_secret}:ADMIN_EMAIL::"
         },
         {
-          name  = "ADMIN_PASSWORD"
-          valueFrom = var.container_secret:ADMIN_PASSWORD::
+          name      = "ADMIN_PASSWORD"
+          valueFrom = "${var.container_secret}:ADMIN_PASSWORD::"
         },
         {
-          name  = "DB_HOST"
-          valueFrom = var.container_secret:DB_HOST::
+          name      = "DB_HOST"
+          valueFrom = "${var.container_secret}:DB_HOST::"
         },
         {
-          name  = "DB_PORT"
-          valueFrom = var.container_secret:DB_PORT::
+          name      = "DB_PORT"
+          valueFrom = "${var.container_secret}:DB_PORT::"
         },
         {
-          name  = "DB_DATABASE"
-          valueFrom = var.container_secret:DB_DATABASE::
+          name      = "DB_DATABASE"
+          valueFrom = "${var.container_secret}:DB_DATABASE::"
         },
         {
-          name  = "DB_USER"
-          valueFrom = var.container_secret:DB_USER::
+          name      = "DB_USER"
+          valueFrom = "${var.container_secret}:DB_USER::"
         },
         {
-          name  = "DB_PASSWORD"
-          valueFrom = var.container_secret:DB_PASSWORD::
+          name      = "DB_PASSWORD"
+          valueFrom = "${var.container_secret}:DB_PASSWORD::"
         },
         {
-          name  = "STORAGE_LOCATIONS"
-          valueFrom = var.container_secret:STORAGE_LOCATIONS::
+          name      = "STORAGE_LOCATIONS"
+          valueFrom = "${var.container_secret}:STORAGE_LOCATIONS::"
         },
         {
-          name  = "STORAGE_SUPABASE_DRIVER"
-          valueFrom = var.container_secret:STORAGE_SUPABASE_DRIVER::
+          name      = "STORAGE_SUPABASE_DRIVER"
+          valueFrom = "${var.container_secret}:STORAGE_SUPABASE_DRIVER::"
         },
         {
-          name  = "STORAGE_SUPABASE_SERVICE_ROLE"
-          valueFrom = var.container_secret:STORAGE_SUPABASE_SERVICE_ROLE::
+          name      = "STORAGE_SUPABASE_SERVICE_ROLE"
+          valueFrom = "${var.container_secret}:STORAGE_SUPABASE_SERVICE_ROLE::"
         },
         {
-          name  = "STORAGE_SUPABASE_BUCKET"
-          valueFrom = var.container_secret:STORAGE_SUPABASE_BUCKET::
+          name      = "STORAGE_SUPABASE_BUCKET"
+          valueFrom = "${var.container_secret}:STORAGE_SUPABASE_BUCKET::"
         },
         {
-          name  = "STORAGE_SUPABASE_PROJECT_ID"
-          valueFrom = var.container_secret:STORAGE_SUPABASE_PROJECT_ID::
+          name      = "STORAGE_SUPABASE_PROJECT_ID"
+          valueFrom = "${var.container_secret}:STORAGE_SUPABASE_PROJECT_ID::"
         }
       ]
 
@@ -164,6 +164,14 @@ module "directus" {
         {
           name  = "STORAGE_SUPABASE_HEALTHCHECK_THRESHOLD"
           value = "1000"
+        },
+        {
+          name  = "CORS_ENABLED"
+          value = "true"
+        },
+        {
+          name  = "CORS_ORIGIN"
+          value = "*"
         },
         {
           name  = "TELEMETRY"
