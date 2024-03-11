@@ -73,14 +73,16 @@ module "ecs_cluster" {
 ################################################################################
 
 
-module "directus" {
+module "directusCMS" {
   source = "terraform-aws-modules/ecs/aws//modules/service"
 
-  name        = "directus"
+  name        = "directusCMS"
   cluster_arn = module.ecs_cluster.cluster_arn
 
-      cpu    = 930
-      memory = 930
+  cpu    = 930
+  memory = 930
+
+  network_mode = "host"
 
   # Task Definition
   requires_compatibilities = ["EC2"]
@@ -96,7 +98,7 @@ module "directus" {
   # Container definition(s)
   container_definitions = {
     ("directus") = {
-      image  = "directus/directus:10.9.2"
+      image = "directus/directus:10.9.2"
       secrets = [
         {
           name      = "KEY"
@@ -193,13 +195,13 @@ module "directus" {
 
   load_balancer = {
     service = {
-      target_group_arn = module.alb.target_groups["directus"].arn
+      target_group_arn = module.alb.target_groups["directusCMS"].arn
       container_name   = "directus"
       container_port   = 8055
     }
   }
 
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = module.vpc.public_subnets
   security_group_rules = {
     directus_ingress = {
       type                     = "ingress"
@@ -275,18 +277,18 @@ module "alb" {
       protocol = "HTTP"
 
       forward = {
-        target_group_key = "directus"
+        target_group_key = "directusCMS"
       }
     }
 
     ex_directus_https = {
-      port     = 443
-      protocol = "HTTPS"
-      ssl_policy        = "ELBSecurityPolicy-2016-08"
-      certificate_arn   = "arn:aws:acm:eu-central-1:211125586837:certificate/772ba8fd-3220-4f14-9ed3-adff998efb96"
+      port            = 443
+      protocol        = "HTTPS"
+      ssl_policy      = "ELBSecurityPolicy-2016-08"
+      certificate_arn = "arn:aws:acm:eu-central-1:211125586837:certificate/772ba8fd-3220-4f14-9ed3-adff998efb96"
 
       forward = {
-        target_group_key = "directus"
+        target_group_key = "directusCMS"
       }
     }
   }
@@ -294,11 +296,10 @@ module "alb" {
 
 
   target_groups = {
-
-    directus = {
-      backend_protocol                  = "HTTP"
-      backend_port                      = 8055
-      target_type                       = "ip"
+    directusCMS = {
+      protocol                          = "HTTP"
+      port                              = 8055
+      target_type                       = "instance"
       deregistration_delay              = 5
       load_balancing_cross_zone_enabled = true
 
@@ -325,7 +326,9 @@ module "alb" {
 
 module "autoscaling" {
   source  = "terraform-aws-modules/autoscaling/aws"
-  version = "~> 6.5"
+  version = "~> 7.4"
+
+  name = local.name
 
   # On-demand instances
 
@@ -349,19 +352,21 @@ module "autoscaling" {
   user_data = base64encode(local.user_data)
 
 
-  name = local.name
+
 
   image_id = jsondecode(data.aws_ssm_parameter.ecs_optimized_ami.value)["image_id"]
 
 
-  security_groups = [module.autoscaling_sg.security_group_id]
-
-  ignore_desired_capacity_changes = true
-
+  security_groups             = [module.autoscaling_sg.security_group_id]
   iam_instance_profile_name   = "ecsInstanceRole"
   create_iam_instance_profile = false
 
-  vpc_zone_identifier = module.vpc.private_subnets
+  ##
+
+  ignore_desired_capacity_changes = true
+
+
+  vpc_zone_identifier = module.vpc.public_subnets
   health_check_type   = "EC2"
   min_size            = 1
   max_size            = 1
@@ -390,6 +395,15 @@ module "autoscaling_sg" {
     {
       rule                     = "http-80-tcp"
       source_security_group_id = module.alb.security_group_id
+    }
+  ]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 8055
+      to_port     = 8055
+      protocol    = "tcp"
+      description = "Directus CMS"
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
   number_of_computed_ingress_with_source_security_group_id = 1

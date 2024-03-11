@@ -33,101 +33,101 @@ output "cluster_autoscaling_capacity_providers" {
 
 output "service_id" {
   description = "ARN that identifies the service"
-  value       = module.directus.id
+  value       = module.directusCMS.id
 }
 
 output "service_name" {
   description = "Name of the service"
-  value       = module.directus.name
+  value       = module.directusCMS.name
 }
 
 output "service_iam_role_name" {
   description = "Service IAM role name"
-  value       = module.directus.iam_role_name
+  value       = module.directusCMS.iam_role_name
 }
 
 output "service_iam_role_arn" {
   description = "Service IAM role ARN"
-  value       = module.directus.iam_role_arn
+  value       = module.directusCMS.iam_role_arn
 }
 
 output "service_iam_role_unique_id" {
   description = "Stable and unique string identifying the service IAM role"
-  value       = module.directus.iam_role_unique_id
+  value       = module.directusCMS.iam_role_unique_id
 }
 
 output "service_container_definitions" {
   description = "Container definitions"
-  value       = module.directus.container_definitions
+  value       = module.directusCMS.container_definitions
   sensitive   = false
 }
 
 output "service_task_definition_arn" {
   description = "Full ARN of the Task Definition (including both `family` and `revision`)"
-  value       = module.directus.task_definition_arn
+  value       = module.directusCMS.task_definition_arn
 }
 
 output "service_task_definition_revision" {
   description = "Revision of the task in a particular family"
-  value       = module.directus.task_definition_revision
+  value       = module.directusCMS.task_definition_revision
 }
 
 output "service_task_exec_iam_role_name" {
   description = "Task execution IAM role name"
-  value       = module.directus.task_exec_iam_role_name
+  value       = module.directusCMS.task_exec_iam_role_name
 }
 
 output "service_task_exec_iam_role_arn" {
   description = "Task execution IAM role ARN"
-  value       = module.directus.task_exec_iam_role_arn
+  value       = module.directusCMS.task_exec_iam_role_arn
 }
 
 output "service_task_exec_iam_role_unique_id" {
   description = "Stable and unique string identifying the task execution IAM role"
-  value       = module.directus.task_exec_iam_role_unique_id
+  value       = module.directusCMS.task_exec_iam_role_unique_id
 }
 
 output "service_tasks_iam_role_name" {
   description = "Tasks IAM role name"
-  value       = module.directus.tasks_iam_role_name
+  value       = module.directusCMS.tasks_iam_role_name
 }
 
 output "service_tasks_iam_role_arn" {
   description = "Tasks IAM role ARN"
-  value       = module.directus.tasks_iam_role_arn
+  value       = module.directusCMS.tasks_iam_role_arn
 }
 
 output "service_tasks_iam_role_unique_id" {
   description = "Stable and unique string identifying the tasks IAM role"
-  value       = module.directus.tasks_iam_role_unique_id
+  value       = module.directusCMS.tasks_iam_role_unique_id
 }
 
 output "service_task_set_id" {
   description = "The ID of the task set"
-  value       = module.directus.task_set_id
+  value       = module.directusCMS.task_set_id
 }
 
 output "service_task_set_arn" {
   description = "The Amazon Resource Name (ARN) that identifies the task set"
-  value       = module.directus.task_set_arn
+  value       = module.directusCMS.task_set_arn
 }
 
 output "service_task_set_stability_status" {
   description = "The stability status. This indicates whether the task set has reached a steady state"
-  value       = module.directus.task_set_stability_status
+  value       = module.directusCMS.task_set_stability_status
 }
 
 output "service_task_set_status" {
   description = "The status of the task set"
-  value       = module.directus.task_set_status
+  value       = module.directusCMS.task_set_status
 }
 
 output "service_autoscaling_policies" {
   description = "Map of autoscaling policies and their attributes"
-  value       = module.directus.autoscaling_policies
+  value       = module.directusCMS.autoscaling_policies
 }
 
 output "service_autoscaling_scheduled_actions" {
   description = "Map of autoscaling scheduled actions and their attributes"
-  value       = module.directus.autoscaling_scheduled_actions
+  value       = module.directusCMS.autoscaling_scheduled_actions
 }
