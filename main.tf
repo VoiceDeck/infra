@@ -41,6 +41,13 @@ module "ecs_cluster" {
 
   default_capacity_provider_use_fargate = false
 
+  cluster_settings = [
+    {
+      "name"  = "containerInsights",
+      "value" = "disabled"
+    }
+  ]
+
   autoscaling_capacity_providers = {
     vd = {
       auto_scaling_group_arn = module.autoscaling.autoscaling_group_arn
@@ -99,6 +106,11 @@ module "directusCMS" {
   container_definitions = {
     ("directus") = {
       image = "directus/directus:10.9.2"
+
+      cpu = 0
+      essential = true
+      system_controls = []
+
       secrets = [
         {
           name      = "KEY"
@@ -185,6 +197,7 @@ module "directusCMS" {
         {
           name          = "directus"
           containerPort = 8055
+          hostPort      = 8055
           protocol      = "tcp"
         }
       ]
