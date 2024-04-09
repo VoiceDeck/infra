@@ -12,7 +12,7 @@ locals {
   name   = "vd-prod"
   region = "eu-central-1"
 
-  azs = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs = ["eu-central-1a", "eu-central-1b"]
 
   tags = {
     Name = local.name
